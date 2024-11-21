@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+    /* 네비게이션 바 아래로 여백 추가 */
+    form {
+        margin-top: 100px;  /* 네비게이션 바 높이에 맞춰 여백 설정 */
+    }
+</style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a href="/" class="w3-bar-item w3-button">HomeComing</a>
+  </div>
+</div>
+
+<!-- 로그인 폼 -->
+<form action="signin" method="post">
+    <table border="1" align="center">
+        <tr>
+            <td><input type="text" name="userId" placeholder="아이디" /></td>
+            <td rowspan="2">
+                <input type="image" src="/static/images/HomeComing.png" width="100" />
+            </td>
+        </tr>
+        <tr>
+            <td><input type="password" name="userPw" placeholder="비밀번호" /></td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>

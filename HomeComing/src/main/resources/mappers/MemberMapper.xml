@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 	
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="spring_boot_board.mapper.MemberMapper">
+<sql id="memberBaseColumns">
+		MEMBER_NUM, MEMBER_NAME, MEMBER_ID, MEMBER_PW
+	  , MEMBER_EMAIL, MEMBER_POST, MEMBER_PHONE, GENDER
+	  , MEMBER_ADDR, MEMBER_ADDR_DETAIL
+</sql>
+<insert id="memberInsert" parameterType="memberDTO">
+    INSERT INTO members (
+      <include refid="memberBaseColumns" />
+    ) 
+    VALUES (
+      #{memberNum}, #{memberName}, #{memberId}, #{memberPw},
+      #{memberEmail}, #{memberPost}, #{memberPhone}, #{gender},
+      #{memberAddr}, #{memberAddrDetail}
+    )
+  </insert>
+</mapper>
