@@ -17,5 +17,29 @@
       #{memberEmail}, #{memberPost}, #{memberPhone}, #{gender},
       #{memberAddr}, #{memberAddrDetail}
     )
-  </insert>
+</insert>
+
+<select resultType="memberDTO" id="memberSelectOne" parameterType="string" >
+	select <include refid="memberBaseColumns" />
+	from members
+	where member_num = #{memberNum, jdbcType=VARCHAR}
+</select>
+
+<update id="memberUpdate" parameterType="memberDTO">
+	update members
+	<trim prefix="set" suffixOverrides=",">
+		member_Name = #{memberName},
+		member_ADDR = #{memberAddr},
+		member_Addr_Detail = #{memberAddrDetail},
+		member_Post = #{memberPost},
+		gender = #{gender},
+		member_Phone = #{memberPhone},
+		member_Email = #{memberEmail}
+	</trim>
+where MEMBER_NUM = #{memberNum, jdbcType=VARCHAR}
+</update>
+<delete id="memberDelete" parameterType="String">
+delete from members
+	where member_num = #{memberNum, jdbcType=VARCHAR}
+</delete>
 </mapper>

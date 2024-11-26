@@ -8,9 +8,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import spring_boot_board.command.MemberCommand;
 import spring_boot_board.service.AutoNumService;
+import spring_boot_board.service.member.MemberDeleteService;
+import spring_boot_board.service.member.MemberDetailService;
+import spring_boot_board.service.member.MemberUpdateService;
 import spring_boot_board.service.member.MemberWriteService;
 
 @RequestMapping("member")
@@ -20,6 +24,12 @@ public class MemberController {
 	AutoNumService autoNumService;
 	@Autowired	
 	MemberWriteService memberWriteService;
+	@Autowired
+	MemberDetailService memberDetailService;
+	@Autowired
+	MemberUpdateService memberUpdateService;
+	@Autowired
+	MemberDeleteService memberDeleteService;
 	@GetMapping("memberWrite")
     public String showLoginPage(Model model) {
 		String autoNum = autoNumService.execute("mem_", "member_num", 5, "members");
@@ -33,7 +43,6 @@ public class MemberController {
 			,BindingResult result
 			/*, Model model*/) {
 		if(result.hasErrors()) {
-			System.out.println("Validation errors detected.");
 			return "thymeleaf/member/memberForm";
 		}
 		if(!memberCommand.isMemberPwEqualMemberPwCon()) {
@@ -43,6 +52,35 @@ public class MemberController {
 			return "thymeleaf/member/memberForm";
 		}
 		memberWriteService.execute(memberCommand);
+		return "redirect:/";
+	}
+	@GetMapping("memberDetail")
+	public String memberDetail(Model model, @RequestParam String memberNum) {
+		memberDetailService.execute(model, memberNum);
+		return "thymeleaf/member/memberDetail";
+	}
+	@GetMapping("memberUpdate")
+	public String memberUpdate(Model model, @RequestParam String memberNum) {
+		memberDetailService.execute(model, memberNum);
+		return "thymeleaf/member/memberModify";
+	}
+	@PostMapping("memberUpdate")
+	public String memberUpdate(@Validated MemberCommand memberCommand,
+			BindingResult result) {
+		System.out.println("/");
+		if(result.hasErrors()) {
+			result.getAllErrors().forEach(error -> {
+	            System.out.println("Error: " + error.getDefaultMessage());
+	        });
+			return "thymeleaf/member/memberModify";
+			
+		}
+		memberUpdateService.execute(memberCommand);
+		return "redirect:memberDetail?memberNum=" + memberCommand.getMemberNum();
+	}
+	@GetMapping("memberDelete")
+	public String memberDelete(@RequestParam String memberNum) {
+		memberDeleteService.execute(memberNum);
 		return "redirect:/";
 	}
 }
