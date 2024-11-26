@@ -67,7 +67,6 @@ public class MemberController {
 	@PostMapping("memberUpdate")
 	public String memberUpdate(@Validated MemberCommand memberCommand,
 			BindingResult result) {
-		System.out.println("/");
 		if(result.hasErrors()) {
 			result.getAllErrors().forEach(error -> {
 	            System.out.println("Error: " + error.getDefaultMessage());

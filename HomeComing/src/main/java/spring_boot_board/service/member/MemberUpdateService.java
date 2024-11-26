@@ -12,7 +12,6 @@ public class MemberUpdateService {
 	@Autowired
 	MemberMapper memberMapper;
 	public void execute(MemberCommand memberCommand) {
-		System.out.println("Service called");
 		MemberDTO dto = new MemberDTO();
 		dto.setMemberNum(memberCommand.getMemberNum());
 		dto.setGender(memberCommand.getGender());

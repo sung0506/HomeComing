@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 	
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="spring_boot_board.mapper.EmployeeMapper">
+<sql id ="employeeBaseColumns">
+		emp_num, emp_name, emp_id, emp_pw
+		, emp_email ,emp_addr, emp_addr_detail
+		, emp_post, emp_phone, emp_jumin
+</sql>
+<insert id="employeeInsert" parameterType="employeeDTO">
+	insert into employees (
+		<include refid="employeeBaseColumns" />
+	)
+	values (
+	  #{empNum}, #{empName}, #{empId}, #{empPw},
+      #{empEmail}, #{empAddr}, #{empAddrDetail}, 
+      #{empPost}, #{empPhone}, #{empJumin}
+	)
+</insert>
+
+<select resultType="employeeDTO" id="employeeSelectOne" parameterType="string" >
+	select <include refid="employeeBaseColumns" />
+	from employees
+	where emp_num = #{empNum, jdbcType=VARCHAR}
+</select>
+
+<update id="employeeUpdate" parameterType="employeeDTO">
+	update employees
+	<trim prefix="set" suffixOverrides=",">
+		emp_Name = #{empName},
+		emp_ADDR = #{empAddr},
+		emp_Addr_Detail = #{empAddrDetail},
+		emp_Post = #{empPost},
+		emp_jumin = #{empJumin},
+		emp_Phone = #{empPhone},
+		emp_Email = #{empEmail}
+	</trim>
+where emp_num = #{empNum, jdbcType=VARCHAR}
+</update>
+
+<delete id="employeeDelete" parameterType="String">
+delete from employees
+	where emp_num = #{empNum, jdbcType=VARCHAR}
+</delete>
+
+</mapper>
