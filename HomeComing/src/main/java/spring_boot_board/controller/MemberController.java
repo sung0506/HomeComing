@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import spring_boot_board.command.MemberCommand;
-import spring_boot_board.domain.AuthInfoDTO;
 import spring_boot_board.service.AutoNumService;
 import spring_boot_board.service.member.MemberDeleteService;
 import spring_boot_board.service.member.MemberDetailService;
+import spring_boot_board.service.member.MemberListService;
 import spring_boot_board.service.member.MemberUpdateService;
 import spring_boot_board.service.member.MemberWriteService;
 
@@ -32,6 +32,16 @@ public class MemberController {
 	MemberUpdateService memberUpdateService;
 	@Autowired
 	MemberDeleteService memberDeleteService;
+	@Autowired
+	MemberListService memberListService;
+	@GetMapping("memberList")
+	public String list(
+			 @RequestParam(value="page" , required = false , defaultValue = "1") Integer page
+			,@RequestParam(value="searchWord", required = false ) String searchWord
+			,Model model) {
+		memberListService.execute(searchWord,page, model);
+		return "thymeleaf/member/memberList";
+	}
 	@GetMapping("memberWrite")
     public String showLoginPage(Model model) {
 		String autoNum = autoNumService.execute("mem_", "member_num", 5, "members");

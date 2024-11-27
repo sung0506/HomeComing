@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import spring_boot_board.command.EmployeeCommand;
 import spring_boot_board.service.AutoNumService;
 import spring_boot_board.service.employee.EmployeeDeleteService;
 import spring_boot_board.service.employee.EmployeeDetailService;
+import spring_boot_board.service.employee.EmployeeListService;
 import spring_boot_board.service.employee.EmployeeUpdateService;
 import spring_boot_board.service.employee.EmployeeWriteService;
 
@@ -31,6 +33,18 @@ public class EmployeeController {
 	EmployeeUpdateService employeeUpdateService;
 	@Autowired
 	EmployeeDeleteService employeeDeleteService;
+	@Autowired
+	EmployeeListService employeeListService;
+	@RequestMapping(value="employeeList", method=RequestMethod.GET)
+	//페이징과 검색을 위한 코드를 추가하겠습니다.
+	public String empList(
+			@RequestParam(value="page", required = false, defaultValue = "1" ) int page,
+			@RequestParam(value="searchWord" , required = false) String searchWord,
+			Model model) {
+		//직원 목록을 가져오도록 해보자.
+		employeeListService.execute(searchWord, page,model);
+		return "thymeleaf/employee/employeeList";
+	}
 	@GetMapping("employeeWrite")
     public String showLoginPage(Model model) {
 		String autoNum = autoNumService.execute("emp_", "emp_num", 5, "employees");

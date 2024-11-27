@@ -6,7 +6,7 @@
 <sql id="memberBaseColumns">
 		MEMBER_NUM, MEMBER_NAME, MEMBER_ID, MEMBER_PW
 	  , MEMBER_EMAIL, MEMBER_POST, MEMBER_PHONE, GENDER
-	  , MEMBER_ADDR, MEMBER_ADDR_DETAIL
+	  , MEMBER_REGIST, MEMBER_ADDR, MEMBER_ADDR_DETAIL
 </sql>
 <insert id="memberInsert" parameterType="memberDTO">
     INSERT INTO members (
@@ -15,7 +15,7 @@
     VALUES (
       #{memberNum}, #{memberName}, #{memberId}, #{memberPw},
       #{memberEmail}, #{memberPost}, #{memberPhone}, #{gender},
-      #{memberAddr}, #{memberAddrDetail}
+      sysdate, #{memberAddr}, #{memberAddrDetail}
     )
 </insert>
 
@@ -46,5 +46,25 @@ delete from members
 <select id="memberNumById" parameterType="String">
 select member_num from members
 where member_id = #{memberId}
+</select>
+
+<select id="memberSelectList" resultType="memberDTO" parameterType="startEndPageDTO">
+select *
+from (select ROW_NUMBER() over (order by member_num ) as rn  
+	        ,<include refid="memberBaseColumns"/>
+	  from members
+<where> 
+	<if test="searchWord != null">
+		MEMBER_NAME like '%'||#{searchWord}||'%'
+		or MEMBER_ID like '%'||#{searchWord}||'%'
+		or MEMBER_NUM like '%'||#{searchWord}||'%'
+	</if>
+</where>
+)
+where rn BETWEEN #{startRow} and #{endRow}
+</select>
+
+<select id="memberCount" resultType="integer">
+	select count(*) from members
 </select>
 </mapper>

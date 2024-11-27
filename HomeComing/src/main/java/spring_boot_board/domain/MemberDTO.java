@@ -1,5 +1,7 @@
 package spring_boot_board.domain;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,4 +20,5 @@ public class MemberDTO {
 	String gender;
 	String memberAddr;
 	String memberAddrDetail;
+	Date memberRegist;
 }

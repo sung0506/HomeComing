@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<title>상품 관리</title>
+<title>회원 관리</title>
 <style>
     /* 네비게이션 바 고정 */
     .w3-top {
@@ -25,7 +25,7 @@
       margin: 0 auto;
     }
 
-    /* 상품 목록 테이블을 위로 밀어내기 */
+    /* 회원 목록 테이블을 위로 밀어내기 */
     table {
       margin-top: 100px;  /* 네비게이션 바와 이미지 높이를 고려하여 테이블 위쪽 여백 추가 */
       width: 100%;  /* 화면 크기에 맞게 테이블의 너비를 100%로 설정 */
@@ -115,40 +115,40 @@
   <div class="w3-bar w3-white w3-wide w3-padding w3-card">
     <a href="/" class="w3-bar-item w3-button">HomeComing</a>
     <div class="w3-right w3-hide-small">
-      <a href="goodsRegist" class="w3-bar-item w3-button">상품 추가</a>
-      <a href="" class="w3-bar-item w3-button">상품 입고 현황</a>  
+      <a href="memberWrite" class="w3-bar-item w3-button">회원 등록</a>
+      <a href="memberList" class="w3-bar-item w3-button">회원 목록</a>  
     </div>
   </div>
 </div>
 
 <div class="w3-container w3-padding-32" id="projects">
-    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">상품 관리</h3>
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">회원 관리</h3>
 </div>
 
 <div class="search-box">
-  <form action="goodsList" method="get">
-    <input type="search" name="searchWord" placeholder="상품 검색" size="60">
+  <form action="memberList" method="get">
+    <input type="search" name="searchWord" placeholder="회원 검색" size="60" th:value="${searchWord}">
     <input type="submit" value="검색" />
   </form>
 </div>
 
 <table>
-  <form action="productsDelete" method="post" id="frm">
+  <form action="membersDelete" method="post" id="frm">
     <tr>
+      <th>선택</th>
       <th>번호</th>
-      <th>상품번호</th>
-      <th>상품명</th>
-      <th>상품가격</th>
+      <th>이름</th>
+      <th>아이디</th>
       <th>등록일</th>
       <th>삭제</th>
     </tr>
-    <tr th:each="dto, idx : ${list}">
-      <td>[[${idx.count}]]</td>
-      <td><a th:href="|goodsDetail?goodsNum=${dto.goodsNum}|">[[${dto.goodsNum}]]</a></td>
-      <td><a th:href="@{goodsDetail(goodsNum=${dto.goodsNum})}">[[${dto.goodsName}]]</a></td>
-      <td>[[${dto.goodsPrice}]]</td>
-      <td>[[${#dates.format(dto.goodsRegist,'yyyy-MM-dd')}]]</td>
-      <td><input type="checkbox" name="nums" th:value="${dto.goodsNum}" /></td>
+    <tr th:each="dto : ${list}">
+      <td><input type="checkbox" name="nums" th:value="${dto.memberNum}"/></td>
+      <td><a th:href="|memberDetail/${dto.memberNum}|">[[${dto.memberNum}]]</a></td>
+      <td><a th:href="@{memberDetail/${dto.memberNum}}">[[${dto.memberName}]]</a></td>
+      <td>[[${dto.memberId}]]</td>
+      <td>[[${#dates.format(dto.memberRegist,'yyyy-MM-dd')}]]</td>
+      <td><input type="checkbox" name="nums" th:value="${dto.memberNum}" /></td>
     </tr>
   </form>
 </table>
@@ -156,16 +156,16 @@
 <div class="pagination">
   <span th:if="${page <= 1}" class="disabled">[이전]</span>
   <span th:if="${page > 1}">
-    <a th:href="@{goodsList(page=${page - 1}, searchWord=${searchWord})}">[이전]</a>
+    <a th:href="|memberList?page=${page - 1}&searchWord=${searchWord}|">[이전]</a>
   </span>
   
   <span th:each="i : ${#numbers.sequence(startPageNum, endPageNum)}">
-    <a th:href="@{goodsList(page=${i},searchWord=${searchWord})}">[[${i}]]</a> 
+    <a th:href="|memberList?page=${i}&searchWord=${searchWord}|">[[${i}]]</a> 
   </span>
   
   <span th:if="${page >= maxPage}" class="disabled">[다음]</span>
   <span th:if="${page < maxPage}">
-    <a th:href="@{goodsList(page=${page + 1}, searchWord=${searchWord})}">[다음]</a>
+    <a th:href="|memberList?page=${page + 1}&searchWord=${searchWord}|">[다음]</a>
   </span>
 </div>
 

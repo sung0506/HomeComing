@@ -1,6 +1,9 @@
 package spring_boot_board.command;
 
+import java.util.Date;
+
 import org.apache.ibatis.type.Alias;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -31,6 +34,8 @@ public class MemberCommand {
 	@NotBlank(message = "주소를 입력하여 주세요.")
 	String memberAddr;
 	String memberAddrDetail;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	Date memberRegist;
 	
 	public boolean isMemberPwEqualMemberPwCon() {
 		return memberPw.equals(memberPwCon);
