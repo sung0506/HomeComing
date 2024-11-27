@@ -1,41 +1,173 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<title>Insert title here</title>
-</head>
-<body>
-<div class="w3-container w3-padding-32" id="projects">
-    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">상품</h3>
-  </div>
+<title>상품 관리</title>
+<style>
+    /* 네비게이션 바 고정 */
+    .w3-top {
+      position: fixed;  /* 화면 상단에 고정 */
+      width: 100%;  /* 네비게이션 바가 화면 너비를 꽉 채우도록 설정 */
+      z-index: 1000;  /* 이미지 위에 오도록 설정 */
+    }
 
-  <div class="w3-row-padding">
-    <div class="w3-col l3 m6 w3-margin-bottom">
-      <div class="w3-display-container">
-        <div class="w3-display-topleft w3-black w3-padding">Summer House</div>
-        <img src="/w3images/house5.jpg" alt="House" style="width:100%">
-      </div>
-    </div>
-    <div class="w3-col l3 m6 w3-margin-bottom">
-      <div class="w3-display-container">
-        <div class="w3-display-topleft w3-black w3-padding">Brick House</div>
-        <img src="/w3images/house2.jpg" alt="House" style="width:100%">
-      </div>
-    </div>
-    <div class="w3-col l3 m6 w3-margin-bottom">
-      <div class="w3-display-container">
-        <div class="w3-display-topleft w3-black w3-padding">Renovated</div>
-        <img src="/w3images/house3.jpg" alt="House" style="width:100%">
-      </div>
-    </div>
-    <div class="w3-col l3 m6 w3-margin-bottom">
-      <div class="w3-display-container">
-        <div class="w3-display-topleft w3-black w3-padding">Barn House</div>
-        <img src="/w3images/house4.jpg" alt="House" style="width:100%">
-      </div>
+    /* 헤더 이미지 */
+    header {
+      margin-top: 60px;  /* 네비게이션 바의 높이에 맞춰 여백을 설정 */
+    }
+
+    header img {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* 상품 목록 테이블을 위로 밀어내기 */
+    table {
+      margin-top: 100px;  /* 네비게이션 바와 이미지 높이를 고려하여 테이블 위쪽 여백 추가 */
+      width: 100%;  /* 화면 크기에 맞게 테이블의 너비를 100%로 설정 */
+      border-collapse: collapse;  /* 테이블 셀의 경계선을 결합하여 디자인 */
+    }
+
+    table th, table td {
+      padding: 12px 20px;  /* 셀 안의 텍스트에 여백을 추가 */
+      text-align: left;  /* 텍스트 왼쪽 정렬 */
+      border-bottom: 1px solid #ddd;  /* 셀 하단에 연한 회색 테두리 */
+    }
+
+    table th {
+      background-color: #f4f4f4;  /* 헤더 셀 배경색 */
+      font-weight: bold;  /* 헤더 텍스트 굵게 */
+    }
+
+    table tr:hover {
+      background-color: #f1f1f1;  /* 행에 마우스를 올리면 배경색 변경 */
+    }
+
+    .search-box {
+      margin: 20px 0;  /* 검색창에 상하 여백 추가 */
+      text-align: center;  /* 중앙 정렬 */
+    }
+
+    .search-box input[type="search"] {
+      padding: 8px;
+      width: 60%;  /* 검색 입력창 너비 설정 */
+      border-radius: 4px;
+      border: 1px solid #ccc;  /* 테두리 추가 */
+      font-size: 16px;
+    }
+
+    .search-box input[type="submit"] {
+      padding: 10px 20px;
+      background-color: #4CAF50;  /* 버튼 배경색 */
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .search-box input[type="submit"]:hover {
+      background-color: #45a049;  /* 버튼 호버 효과 */
+    }
+
+    .pagination {
+      text-align: center;  /* 페이지네이션을 중앙에 배치 */
+      margin-top: 20px;
+    }
+
+    .pagination a {
+      margin: 0 5px;
+      padding: 8px 16px;
+      background-color: #4CAF50;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+
+    .pagination a:hover {
+      background-color: #45a049;
+    }
+
+    .pagination .disabled {
+      background-color: #ddd;
+      color: #888;
+    }
+
+    /* 모바일 반응형 */
+    @media screen and (max-width: 768px) {
+      table th, table td {
+        padding: 8px;  /* 모바일에서 테이블 셀 padding 줄이기 */
+      }
+
+      .search-box input[type="search"] {
+        width: 80%;  /* 모바일에서 검색 입력창 너비를 80%로 설정 */
+      }
+    }
+</style>
+</head>
+
+<body>
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a href="#home" class="w3-bar-item w3-button">HomeComing</a>
+    <div class="w3-right w3-hide-small">
+      <a href="goodsRegist" class="w3-bar-item w3-button">상품 추가</a>
+      <a href="/member/memberDetail" class="w3-bar-item w3-button">상품 입고 현황</a>  
     </div>
   </div>
+</div>
+
+<div class="w3-container w3-padding-32" id="projects">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">상품 관리</h3>
+</div>
+
+<div class="search-box">
+  <form action="goodsList" method="get">
+    <input type="search" name="searchWord" placeholder="상품 검색" size="60">
+    <input type="submit" value="검색" />
+  </form>
+</div>
+
+<table>
+  <form action="productsDelete" method="post" id="frm">
+    <tr>
+      <th>번호</th>
+      <th>상품번호</th>
+      <th>상품명</th>
+      <th>상품가격</th>
+      <th>등록일</th>
+      <th>삭제</th>
+    </tr>
+    <tr th:each="dto, idx : ${list}">
+      <td>[[${idx.count}]]</td>
+      <td><a th:href="|goodsDetail?goodsNum=${dto.goodsNum}|">[[${dto.goodsNum}]]</a></td>
+      <td><a th:href="@{goodsDetail(goodsNum=${dto.goodsNum})}">[[${dto.goodsName}]]</a></td>
+      <td>[[${dto.goodsPrice}]]</td>
+      <td>[[${#dates.format(dto.goodsRegist,'yyyy-MM-dd')}]]</td>
+      <td><input type="checkbox" name="nums" th:value="${dto.goodsNum}" /></td>
+    </tr>
+  </form>
+</table>
+
+<div class="pagination">
+  <span th:if="${page <= 1}" class="disabled">[이전]</span>
+  <span th:if="${page > 1}">
+    <a th:href="@{goodsList(page=${page - 1}, searchWord=${searchWord})}">[이전]</a>
+  </span>
+  
+  <span th:each="i : ${#numbers.sequence(startPageNum, endPageNum)}">
+    <a th:href="@{goodsList(page=${i},searchWord=${searchWord})}">[[${i}]]</a> 
+  </span>
+  
+  <span th:if="${page >= maxPage}" class="disabled">[다음]</span>
+  <span th:if="${page < maxPage}">
+    <a th:href="@{goodsList(page=${page + 1}, searchWord=${searchWord})}">[다음]</a>
+  </span>
+</div>
+
 </body>
 </html>
