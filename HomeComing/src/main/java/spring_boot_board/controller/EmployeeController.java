@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpSession;
 import spring_boot_board.command.EmployeeCommand;
 import spring_boot_board.service.AutoNumService;
 import spring_boot_board.service.employee.EmployeeDeleteService;
@@ -55,13 +56,13 @@ public class EmployeeController {
 		return "redirect:/";
 	}
 	@GetMapping("employeeDetail")
-	public String empDetail(Model model, @RequestParam String empNum) {
-		employeeDetailService.execute(model, empNum);
+	public String empDetail(Model model, HttpSession session) {
+		employeeDetailService.execute(model, session);
 		return "thymeleaf/employee/employeeDetail";
 	}
 	@GetMapping("employeeUpdate")
-	public String empUpdate(Model model, @RequestParam String empNum) {
-		employeeDetailService.execute(model, empNum);
+	public String empUpdate(Model model, HttpSession session) {
+		employeeDetailService.execute(model, session);
 		return "thymeleaf/employee/employeeModify";
 	}
 	@PostMapping("employeeUpdate")

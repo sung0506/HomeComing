@@ -42,4 +42,9 @@ where MEMBER_NUM = #{memberNum, jdbcType=VARCHAR}
 delete from members
 	where member_num = #{memberNum, jdbcType=VARCHAR}
 </delete>
+
+<select id="memberNumById" parameterType="String">
+select member_num from members
+where member_id = #{memberId}
+</select>
 </mapper>

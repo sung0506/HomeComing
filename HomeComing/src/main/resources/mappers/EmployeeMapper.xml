@@ -44,4 +44,8 @@ delete from employees
 	where emp_num = #{empNum, jdbcType=VARCHAR}
 </delete>
 
+<select id="employeeNumById" parameterType="String">
+select emp_num from employees
+where emp_id = #{empId}
+</select>
 </mapper>

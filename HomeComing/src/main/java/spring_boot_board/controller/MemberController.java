@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpSession;
 import spring_boot_board.command.MemberCommand;
+import spring_boot_board.domain.AuthInfoDTO;
 import spring_boot_board.service.AutoNumService;
 import spring_boot_board.service.member.MemberDeleteService;
 import spring_boot_board.service.member.MemberDetailService;
@@ -54,14 +56,22 @@ public class MemberController {
 		memberWriteService.execute(memberCommand);
 		return "redirect:/";
 	}
+	/*
 	@GetMapping("memberDetail")
 	public String memberDetail(Model model, @RequestParam String memberNum) {
 		memberDetailService.execute(model, memberNum);
 		return "thymeleaf/member/memberDetail";
 	}
+	*/
+	@GetMapping("memberDetail")
+	public String memberDetail(Model model, HttpSession session) {
+		memberDetailService.execute(model, session);
+		return "thymeleaf/member/memberDetail";
+	}
+	
 	@GetMapping("memberUpdate")
-	public String memberUpdate(Model model, @RequestParam String memberNum) {
-		memberDetailService.execute(model, memberNum);
+	public String memberUpdate(Model model, HttpSession session) {
+		memberDetailService.execute(model, session);
 		return "thymeleaf/member/memberModify";
 	}
 	@PostMapping("memberUpdate")
