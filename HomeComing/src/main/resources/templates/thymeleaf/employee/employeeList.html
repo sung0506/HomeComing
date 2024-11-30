@@ -144,8 +144,8 @@
     </tr>
     <tr th:each="dto : ${list}">
       <td><input type="checkbox" name="nums" th:value="${dto.empNum}"/></td>
-      <td><a th:href="|employeeDetail/${dto.empNum}|">[[${dto.empNum}]]</a></td>
-      <td><a th:href="@{employeeDetail/${dto.empNum}}">[[${dto.empName}]]</a></td>
+      <td><a th:href="|/employee/employeeDetail/${dto.empNum}|">[[${dto.empNum}]]</a></td>
+	  <td><a th:href="|/employee/employeeDetail/${dto.empNum}|">[[${dto.empName}]]</a></td>
       <td>[[${dto.empId}]]</td>
       <td>[[${#dates.format(dto.empHireDate,'yyyy-MM-dd')}]]</td>
       <td><input type="checkbox" name="nums" th:value="${dto.empNum}" /></td>

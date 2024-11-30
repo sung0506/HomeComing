@@ -67,4 +67,16 @@ where rn between #{startRow}  and #{endRow}
 		</if>
 	</where>
 </select>
+
+<select id="selectOne" parameterType="string" resultMap="goodsResultMap">
+select <include refid="goodsColumnsBase" />
+from goods  
+where goods_Num = #{goodsNum}
+</select>
+
+<select id="goodsListByKind" parameterType="String" resultType="goods">
+SELECT * 
+FROM goods
+WHERE goods_Kind = #{goodsKind, jdbcType=VARCHAR}
+</select>
 </mapper>

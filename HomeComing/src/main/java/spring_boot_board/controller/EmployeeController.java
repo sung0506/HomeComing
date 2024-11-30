@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import spring_boot_board.command.EmployeeCommand;
+import spring_boot_board.domain.EmployeeDTO;
+import spring_boot_board.mapper.EmployeeMapper;
 import spring_boot_board.service.AutoNumService;
 import spring_boot_board.service.employee.EmployeeDeleteService;
 import spring_boot_board.service.employee.EmployeeDetailService;
@@ -35,6 +38,8 @@ public class EmployeeController {
 	EmployeeDeleteService employeeDeleteService;
 	@Autowired
 	EmployeeListService employeeListService;
+	@Autowired
+	EmployeeMapper employeeMapper;
 	@RequestMapping(value="employeeList", method=RequestMethod.GET)
 	//페이징과 검색을 위한 코드를 추가하겠습니다.
 	public String empList(
@@ -73,6 +78,12 @@ public class EmployeeController {
 	public String empDetail(Model model, HttpSession session) {
 		employeeDetailService.execute(model, session);
 		return "thymeleaf/employee/employeeDetail";
+	}
+	@GetMapping("employeeDetail/{empNum}")
+	public String employeeDetailByNum(@PathVariable("empNum") String empNum, Model model) {
+	    EmployeeDTO dto = employeeMapper.employeeSelectOne(empNum);
+	    model.addAttribute("employeeCommand", dto);
+	    return "thymeleaf/employee/employeeDetail";
 	}
 	@GetMapping("employeeUpdate")
 	public String empUpdate(Model model, HttpSession session) {

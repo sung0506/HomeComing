@@ -12,4 +12,6 @@ public interface GoodsMapper {
 	public int goodsInsert(GoodsDTO dto);
 	public List<GoodsDTO> allSelect(StartEndPageDTO sepDTO);
 	public int goodsCount(String searchWord);
+	public GoodsDTO selectOne(String goodsNum);
+	public List<GoodsDTO> goodsListByKind(String goodsKind);
 }

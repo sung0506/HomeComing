@@ -6,12 +6,15 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import spring_boot_board.command.MemberCommand;
+import spring_boot_board.domain.MemberDTO;
+import spring_boot_board.mapper.MemberMapper;
 import spring_boot_board.service.AutoNumService;
 import spring_boot_board.service.member.MemberDeleteService;
 import spring_boot_board.service.member.MemberDetailService;
@@ -34,6 +37,8 @@ public class MemberController {
 	MemberDeleteService memberDeleteService;
 	@Autowired
 	MemberListService memberListService;
+	@Autowired
+	MemberMapper memberMapper;
 	@GetMapping("memberList")
 	public String list(
 			 @RequestParam(value="page" , required = false , defaultValue = "1") Integer page
@@ -66,19 +71,34 @@ public class MemberController {
 		memberWriteService.execute(memberCommand);
 		return "redirect:/";
 	}
-	/*
-	@GetMapping("memberDetail")
-	public String memberDetail(Model model, @RequestParam String memberNum) {
-		memberDetailService.execute(model, memberNum);
-		return "thymeleaf/member/memberDetail";
-	}
-	*/
 	@GetMapping("memberDetail")
 	public String memberDetail(Model model, HttpSession session) {
 		memberDetailService.execute(model, session);
 		return "thymeleaf/member/memberDetail";
 	}
-	
+	@GetMapping("memberDetail/{memberNum}")
+	public String memberDetailByNum(@PathVariable("memberNum") String memberNum, Model model) {
+	    MemberDTO dto = memberMapper.memberSelectOne(memberNum);
+	    model.addAttribute("memberCommand", dto);
+	    return "thymeleaf/member/memberDetail";
+	}
+	/*
+	@GetMapping("memberDetail")
+	public String memberDetail(@RequestParam(value = "memberNum", required = false) String memberNum, 
+	                           Model model, 
+	                           HttpSession session) {
+	    // 세션에서 로그인 정보 가져오기
+	    AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+	    String loginMemberNum = memberMapper.memberNumById(auth.getUserId());
+	    // memberNum이 없는 경우 (회원이 본인 정보 조회)
+	    if (memberNum == null) {
+	        memberNum = loginMemberNum;
+	    } 
+	    MemberDTO dto = memberMapper.memberSelectOne(memberNum);
+	    model.addAttribute("memberCommand", dto);
+	    return "thymeleaf/member/memberDetail";
+	}
+	*/
 	@GetMapping("memberUpdate")
 	public String memberUpdate(Model model, HttpSession session) {
 		memberDetailService.execute(model, session);

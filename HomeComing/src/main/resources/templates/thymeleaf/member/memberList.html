@@ -144,8 +144,8 @@
     </tr>
     <tr th:each="dto : ${list}">
       <td><input type="checkbox" name="nums" th:value="${dto.memberNum}"/></td>
-      <td><a th:href="|memberDetail/${dto.memberNum}|">[[${dto.memberNum}]]</a></td>
-      <td><a th:href="@{memberDetail/${dto.memberNum}}">[[${dto.memberName}]]</a></td>
+      <td><a th:href="|/member/memberDetail/${dto.memberNum}|">[[${dto.memberNum}]]</a></td>
+	  <td><a th:href="|/member/memberDetail/${dto.memberNum}|">[[${dto.memberName}]]</a></td>
       <td>[[${dto.memberId}]]</td>
       <td>[[${#dates.format(dto.memberRegist,'yyyy-MM-dd')}]]</td>
       <td><input type="checkbox" name="nums" th:value="${dto.memberNum}" /></td>

@@ -8,12 +8,11 @@
 </head>
 <body>
 <div class="w3-container w3-padding-32" id="contact">
-    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">내 정보</h3>
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">상세 정보</h3>
 
     <!-- 카드 형식으로 회원 상세정보 -->
     <div class="w3-card-4 w3-margin w3-white">
         <div class="w3-container w3-light-grey">
-            <h4>회원 상세 정보</h4>
         </div>
         <div class="w3-container">
             <p><strong>회원번호:</strong> <span th:text="${memberCommand.memberNum}">mem_100001</span></p>
@@ -28,8 +27,10 @@
         </div>
         <div class="w3-container w3-padding-16 w3-light-grey">
             <!-- 회원 수정, 탈퇴 및 목록으로 돌아가기 -->
+            <th:block th:if="${session.auth.grade == 'mem'}">
             <a href="memberUpdate?memberNum=mem_100001	" class="w3-button w3-blue">회원 수정</a> |
             <a href="memberDelete?memberNum=mem_100001" class="w3-button w3-red">회원 탈퇴</a> 
+            </th:block>
         </div>
     </div>
 </div>
