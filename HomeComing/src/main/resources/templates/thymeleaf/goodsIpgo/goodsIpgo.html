@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <title>상품 입고 관리</title>
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-container h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-container input,
+        .form-container button {
+            width: calc(100% - 20px);
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-container button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+
+        .navigation {
+            background-color: #333;
+            overflow: hidden;
+            padding: 10px 0;
+        }
+
+        .navigation a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            display: inline-block;
+        }
+
+        .navigation a:hover {
+            background-color: #575757;
+        }
+    </style>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+    <script>
+        $(function () {
+            // 상품 검색 버튼 클릭
+            $("#btnSearch").click(function () {
+                window.open("goodsItem", "상품검색", "width=620, height=500, left=30, top=50");
+            });
+
+            // 입고 등록 버튼 클릭
+            $("#btnRegister").click(function () {
+                $("#frm").ajaxSubmit({
+                    type: "POST",
+                    url: "ipgoRegist",
+                    beforeSubmit: function () {
+                        if ($("#goodsNum").val() == "") {
+                            alert("상품번호를 입력해주세요.");
+                            $("#goodsNum").focus();
+                            return false;
+                        }
+                        if ($("#ipgoDate").val() == "") {
+                            alert("입고일을 입력해주세요.");
+                            $("#ipgoDate").focus();
+                            return false;
+                        }
+                        if ($("#madeDate").val() == "") {
+                            alert("제조일을 입력해주세요.");
+                            $("#madeDate").focus();
+                            return false;
+                        }
+                        if ($("#ipgoPrice").val() == 0) {
+                            alert("금액을 입력해주세요.");
+                            $("#ipgoPrice").focus();
+                            return false;
+                        }
+                    },
+                    success: function (result) {
+                        if (result == 200) {
+                            location.href = "goodsIpgoList";
+                        }
+                    },
+                    error: function () {
+                        alert("서버 오류가 발생했습니다.");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="w3-top">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a href="/" class="w3-bar-item w3-button">HomeComing</a>
+    <!-- Float links to the right. Hide them on small screens -->
+    <div class="w3-right w3-hide-small">
+ 			<div th:if="${session.auth != null}">
+      		<th:block th:if="${session.auth.grade == 'emp'}">
+      		<a href="goodsList" class="w3-bar-item w3-button">상품 관리</a>
+      		<a href="goodsIpgoList" class="w3-bar-item w3-button">상품 입고</a>
+      		<a href="login/logout" class="w3-bar-item w3-button">로그아웃</a>
+      		</th:block>
+
+      		
+      	</div>
+      </div>
+  </div>
+</div>
+
+    <!-- Form Container -->
+    <div class="form-container">
+        <h3>상품 입고 등록</h3>
+        <form id="frm" method="post">
+            <label for="goodsIpgoNum">입고번호</label>
+            <input type="text" id="goodsIpgoNum" name="goodsIpgoNum" th:value="${goodsIpgoCommand.goodsIpgoNum}" placeholder="자동 부여" readonly>
+
+            <label for="goodsNum">상품번호</label>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="goodsNum" name="goodsNum" placeholder="상품번호 입력">
+                <button type="button" id="btnSearch" style="flex: 1;">상품 검색</button>
+            </div>
+
+            <label for="goodsName">상품명</label>
+            <input type="text" id="goodsName" name="goodsName" placeholder="상품명을 입력하세요">
+
+            <label for="ipgoDate">입고일</label>
+            <input type="date" id="ipgoDate" name="ipgoDate">
+
+            <label for="ipgoQty">입고 수량</label>
+            <input type="number" id="ipgoQty" name="ipgoQty" value="1" min="1">
+
+            <label for="madeDate">제조일</label>
+            <input type="datetime-local" id="madeDate" name="madeDate">
+
+            <label for="ipgoPrice">가격</label>
+            <input type="number" id="ipgoPrice" name="ipgoPrice" value="0" min="0" max="100000">
+
+            <button type="button" id="btnRegister">입고 등록</button>
+        </form>
+    </div>
+</body>
+</html>
