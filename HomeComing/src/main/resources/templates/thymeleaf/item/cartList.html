@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>장바구니</title>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+<script type="text/javascript" src="/static/js/checkbox.js"></script>
+<script type="text/javascript" src="/static/js/money.js"></script>
+<script type="text/javascript">
+function cartAdd(goodsNum , goodsPrice){
+	var stringNumber = $("#"+goodsNum).text();  // 1,000
+	var number = Number(stringNumber.replace(/,/g, '')); // 1000
+	number += 1;
+	const commaNumber = number.toLocaleString(); // 1,001
+	
+	var formData = JSON.stringify({
+		goodsNum : goodsNum,
+		qty : 1
+	});
+
+	option = {
+		type: "post",
+		url: "/item/cartAdd",
+		contentType: "application/json",
+		data:formData,
+		success :  function(result){ // w1,000,000
+			var price = $("#t_"+goodsNum).text().substring(1).replace(/,/g, "");
+			console.log(price); // 100000
+			if(result == 200){
+				$("#"+goodsNum).text(commaNumber); // 수량  1000 + 1
+				price = Number(price) + parseInt(goodsPrice);     // 	1000
+				$("#t_"+goodsNum).text(formatter.format(price));
+			}
+		},
+		error : err ,
+		complete : prodChk
+	};
+	$.ajax(option);
+}
+function prodChk(){
+	var chkLeng  = $('input[name="nums"]')
+	var cnt = 0; // 상품 수
+	var totalQty = 0; // 총 상품의 갯수
+	var totalPrice = 0; // 총 상품 금액
+	for(var i = 0; i < chkLeng.length ; i++){
+		if(chkLeng[i].checked){
+			cnt ++; // 상품 수 증가
+			var stringQty = $(".cartQty:eq("+i+")").text();  // 1,000
+			var number = Number(stringQty.replace(/,/g, '')); // 1000
+			totalQty += Number(number); // 총 수량 합산
+			
+			var price = $(".totalPrice:eq("+i+")").text().substring(1).replace(/,/g,"");
+			totalPrice += Number(price); // 총 가격 합산
+		}
+	}
+	var commaQty = totalQty.toLocaleString(); // 1,001
+	$("#prodCnt").text(cnt);
+	$("#totQty").text(commaQty);
+	$("#totalPrice").text(formatter.format(totalPrice)); // 총 금액 출력
+}
+function err(){
+	alert("로그 아웃되었습니다. 다시로그인 해주세요.");
+	window.open("loginCk.login","loginck","width=400,height=400");
+}
+function checkQty(goodsNum, goodsPrice){
+	var stringNumber = $("#"+goodsNum).text();
+	var number = Number(stringNumber.replace(/,/g, ''));
+	if(number > 1){
+		number = number - 1;
+		const commaNumber = number.toLocaleString();
+		var xhr = new XMLHttpRequest();
+		xhr.onload = function(){
+			if(xhr.status==200){
+				var price = $("#t_"+goodsNum).text().substring(1).replace(/,/g, "");
+				$("#"+goodsNum).text(commaNumber);
+				price = Number(price) - parseInt(goodsPrice);
+				$("#t_"+goodsNum).text(formatter.format(price));
+				prodChk();
+			}
+		}
+		xhr.open("GET","cartQtyDown?goodsNum="+goodsNum, true);
+		xhr.send();
+	}else{
+		alert("최소 수량은 1이어야 합니다.");
+	}	
+}
+function del1(){
+	var chk_arr = [];
+	$("input:checkbox[name='nums']:checked").each(function(){
+		chk_arr.push($(this).val());
+	});
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST","cartDels",true);
+	xhr.setRequestHeader("Content-Type", "application/json");
+	var formData = JSON.stringify(chk_arr);
+	xhr.onload = function(){
+		if(xhr.status == 200){
+			var result = xhr.responseText;
+			if(result == "200") location.reload();
+			else alert("삭제되지 않았습니다.");
+		}else{
+			alert("삭제되지 않았습니다.");
+		}
+	}
+	xhr.send(formData);
+}
+</script>
+<style>
+/* 기본 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 80%;
+    margin: 30px auto;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+/* 버튼 스타일 */
+input[type="button"], input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="button"]:hover, input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+input[type="checkbox"] {
+    transform: scale(1.2);
+    margin-left: 5px;
+}
+
+/* 체크박스, 수량, 금액 텍스트 스타일 */
+.cartQty, .totalPrice {
+    font-size: 16px;
+    color: #333;
+}
+
+.totalPrice {
+    font-weight: bold;
+}
+
+/* 상품 삭제 버튼 */
+input[type="button"] {
+    background-color: #e74c3c;
+}
+
+input[type="button"]:hover {
+    background-color: #c0392b;
+}
+
+/* 하단 총합 스타일 */
+#prodCnt, #totQty, #totalPrice {
+    font-weight: bold;
+    color: #333;
+}
+
+#totQty, #totalPrice {
+    color: #27ae60;
+}
+</style>
+</head>
+<body>
+<form action="/purchase/goodsBuy" method="post">
+<table>
+    <thead>
+        <tr>
+            <th><input type="checkbox" id="checkBoxs" checked="checked"/></th>
+            <th>이미지</th>
+            <th>제품이름</th>
+            <th>수량</th>
+            <th>합계금액</th>
+            <th><input type="button" value="선택 상품 삭제" onclick="del1();"/></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="dto : ${list}">
+            <td><input type="checkbox" name="nums" checked="checked" th:value="${dto.goodsDTO.goodsNum}" /></td>
+            <td><img th:src="|/static/upload/${dto.goodsDTO.goodsMainStoreImage}|" width="50" height="50"/></td>
+            <td>[[${dto.goodsDTO.goodsName}]]</td>
+            <td>
+                <a th:href="|javascript:checkQty('${dto.goodsDTO.goodsNum}','${dto.goodsDTO.goodsPrice}');|"> - </a>
+                <span th:id="${dto.goodsDTO.goodsNum}" class="cartQty">[[${#numbers.formatInteger(dto.cartDTO.cartQty,1,'COMMA')}]]</span>개
+                <a th:href="|javascript:cartAdd('${dto.goodsDTO.goodsNum}','${dto.goodsDTO.goodsPrice}');|"> + </a>
+            </td>
+            <td><span th:id="${'t_'+dto.goodsDTO.goodsNum}" class="totalPrice">[[${#numbers.formatCurrency(dto.goodsDTO.goodsPrice * dto.cartDTO.cartQty)}]]</span>원</td>
+            <td><input type="button" value="삭제" th:attr="onclick=|javascript:location.href='cartDel?goodsNums=${dto.goodsDTO.goodsNum}'|"/></td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="6" align="right">
+                상품수 : <span id="prodCnt">[[${#numbers.formatInteger(list.size(),1,'COMMA')}]]</span>개<br />
+                총수량 : <span id="totQty">[[${#numbers.formatInteger(totQty,1,'COMMA')}]]</span>개<br />
+                전체 합계 : <span id="totalPrice">[[${#numbers.formatCurrency(totPri)}]]</span>원
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" align="right"><input type="submit" value="구매하기"/></td>
+        </tr>
+    </tfoot>
+</table>
+</form>
+</body>
+</html>
