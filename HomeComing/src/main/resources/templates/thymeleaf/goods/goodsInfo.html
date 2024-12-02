@@ -2,40 +2,121 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>상품 상세보기</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    table {
+        margin: 50px auto;
+        border-collapse: collapse;
+        width: 600px;
+        background: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    caption {
+        font-size: 1.5em;
+        font-weight: bold;
+        margin: 20px 0;
+        color: #333;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+        color: #555;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin: 5px 0;
+    }
+
+    a {
+        display: inline-block;
+        margin: 10px 0;
+        padding: 8px 12px;
+        text-decoration: none;
+        color: #fff;
+        background-color: #007BFF;
+        border-radius: 4px;
+        font-size: 14px;
+        text-align: center;
+        transition: background-color 0.3s ease;
+    }
+
+    a:hover {
+        background-color: #0056b3;
+    }
+
+    a:last-child {
+        background-color: #6c757d;
+    }
+
+    a:last-child:hover {
+        background-color: #5a6268;
+    }
+</style>
 </head>
 <body>
-<table border=1 align="center" width="600">
-<caption>상품 상세보기</caption>
-<tr><th width="150">상품번호</th><td>[[${goodsCommand.goodsNum }]]</td></tr>
-<tr><th>상품명</th><td>[[${goodsCommand.goodsName }]]</td></tr>
-<tr><th>상품가격</th><td>[[${goodsCommand.goodsPrice }]]</td></tr>
-<tr><th>상품설명</th><td><!-- \n을 <br />로 변경합니다. -->
-<span  th:utext="${#strings.replace(goodsCommand.goodsContents, newLine, '<br />')}"></span>
-</td></tr>
-<tr><th>조회수</th><td>[[${goodsCommand.visitCount }]]</td></tr>
-<tr><th>등록한 사원</th><td>[[${goodsCommand.empNum }]]</td></tr>
-<tr><th>등록일</th><td>[[${#dates.format(goodsCommand.goodsRegist,'yyyy-MM-dd') }]]</td></tr>
-<tr><th>마지막 수정 사원</th><td>[[${goodsCommand.updateEmpNum }]]</td></tr>
-<tr><th>마지막 수정일</th><td>[[${#dates.format(goodsCommand.goodsUpdateDate,'yyyy-MM-dd') }]]</td></tr>
-<tr><td colspan="2">대문이미지<br />
-	<img th:src="|/static/upload/${goodsCommand.goodsMainStoreImage}|"/>
-	</td></tr>
-<tr><td colspan="2">상세이미지<br />
-	<th:block th:each="image : ${#strings.arraySplit(goodsCommand.goodsDetailStoreImage,'[`/]')}">
-		<img th:src="|/static/upload/${image}|"/><br />
-	</th:block>
-</td></tr>
-
-
-
-
-		<a th:href="@{goodsUpdate(goodsNum=${goodsCommand.goodsNum })}">상품 수정</a> | 
-		<a th:href="@{'goodsDel/'+${goodsCommand.goodsNum }}">상품 삭제</a> | 
-			  <!-- |goodsDel/${goodsCommand.goodsNum }| -->
-		<a href="goodsList">상품목록</a> |
-		<a href="javascript:history.back();">뒤로가기</a>		
-		</th></tr>
+<table>
+    <caption>상품 상세보기</caption>
+    <tr><th width="150">상품번호</th><td>[[${goodsCommand.goodsNum }]]</td></tr>
+    <tr><th>상품명</th><td>[[${goodsCommand.goodsName }]]</td></tr>
+    <tr><th>상품가격</th><td>[[${goodsCommand.goodsPrice }]]</td></tr>
+    <tr><th>상품설명</th><td>
+        <span th:utext="${#strings.replace(goodsCommand.goodsContents, newLine, '<br />')}"></span>
+    </td></tr>
+    <tr><th>조회수</th><td>[[${goodsCommand.visitCount }]]</td></tr>
+    <tr><th>등록한 사원</th><td>[[${goodsCommand.empNum }]]</td></tr>
+    <tr><th>등록일</th><td>[[${#dates.format(goodsCommand.goodsRegist,'yyyy-MM-dd') }]]</td></tr>
+    <tr><th>마지막 수정 사원</th><td>[[${goodsCommand.updateEmpNum }]]</td></tr>
+    <tr><th>마지막 수정일</th><td>[[${#dates.format(goodsCommand.goodsUpdateDate,'yyyy-MM-dd') }]]</td></tr>
+    <tr>
+        <td colspan="2" style="text-align: center;">
+            대문이미지<br />
+            <img th:src="|/static/upload/${goodsCommand.goodsMainStoreImage}|"/>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="text-align: center;">
+            상세이미지<br />
+            <th:block th:each="image : ${#strings.arraySplit(goodsCommand.goodsDetailStoreImage,'[`/]')}">
+                <img th:src="|/static/upload/${image}|"/><br />
+            </th:block>
+        </td>
+    </tr>
 </table>
+
+<div style="text-align: center; margin-top: 20px;">
+    <a th:href="@{goodsUpdate(goodsNum=${goodsCommand.goodsNum })}">상품 수정</a>
+    <a th:href="@{'goodsDel/'+${goodsCommand.goodsNum }}">상품 삭제</a>
+    <a href="goodsList">상품목록</a>
+    <a href="javascript:history.back();">뒤로가기</a>
+</div>
 </body>
 </html>

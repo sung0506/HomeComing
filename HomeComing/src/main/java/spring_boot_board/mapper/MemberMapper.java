@@ -16,4 +16,5 @@ public interface MemberMapper {
 	public String memberNumById(String memberId);
 	public List<MemberDTO> memberSelectList(StartEndPageDTO sepDTO); 
 	public Integer memberCount();
+	public String memberNumSelect(String memberId);
 }

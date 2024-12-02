@@ -67,4 +67,7 @@ where rn BETWEEN #{startRow} and #{endRow}
 <select id="memberCount" resultType="integer">
 	select count(*) from members
 </select>
+<select id="memberNumSelect" parameterType="string" resultType="string">
+	select member_num from members where member_id = #{memberId}
+</select>
 </mapper>

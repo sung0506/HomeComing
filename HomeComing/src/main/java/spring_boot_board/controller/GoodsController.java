@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import spring_boot_board.command.GoodsCommand;
 import spring_boot_board.service.AutoNumService;
@@ -19,6 +20,7 @@ import spring_boot_board.service.goods.GoodsDetailService;
 import spring_boot_board.service.goods.GoodsListService;
 import spring_boot_board.service.goods.GoodsRegistService;
 import spring_boot_board.service.goods.KindGoodsListService;
+import spring_boot_board.service.item.GoodsDetailViewService;
 
 @RequestMapping("goods")
 @Controller
@@ -33,6 +35,8 @@ public class GoodsController {
 	GoodsDetailService goodsDetailService;
 	@Autowired
 	KindGoodsListService kindGoodsListService;
+	@Autowired
+	GoodsDetailViewService goodsDetailViewService;
 	@GetMapping("goodsList")
 	@RequestMapping(value="goodsList" , method=RequestMethod.GET)
 	public String  goodsList(
@@ -81,12 +85,14 @@ public class GoodsController {
 		goodsDetailService.execute(goodsNum, model);
 		return "thymeleaf/goods/goodsInfo";
 	}
+	/*
 	@GetMapping("goodsDetail/{goodsNum}")
 	public String goodsKindDetail(
 			@PathVariable("goodsNum") String goodsNum,
-			Model model) {
-		goodsDetailService.execute(goodsNum, model);
+			Model model, HttpServletResponse response, HttpSession session) {
+		goodsDetailViewService.execute(goodsNum, model, response, session);
 		return "thymeleaf/goods/goodsKindDetail";
 		
 	}
+	*/
 }

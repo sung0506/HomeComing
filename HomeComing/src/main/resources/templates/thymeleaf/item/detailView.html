@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 정보</title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        table {
+            width: 80%;
+            margin: 50px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        caption {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        td {
+            padding: 15px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        td img {
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+          img {
+ 			 max-width: 100%; /* 부모 요소의 너비를 넘지 않도록 설정 */
+  			height: auto; /* 높이를 자동으로 조정하여 비율을 유지 */
+  			display: block; /* 이미지를 블록으로 처리하여 레이아웃에 영향을 주지 않도록 */
+  			margin: 0 auto; /* 이미지가 중앙에 오도록 설정 */
+		}
+        
+
+        #cartQty {
+            width: 60px;
+            padding: 5px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        span {
+            font-size: 16px;
+            cursor: pointer;
+            color: #000000;
+        }
+
+        span:hover {
+            text-decoration: underline;
+        }
+
+        .stock-status {
+            color: green;
+            font-weight: bold;
+        }
+
+        .out-of-stock {
+            color: red;
+            font-weight: bold;
+        }
+
+        #wish {
+            cursor: pointer;
+        }
+
+        #content {
+   			margin-top: 20px;
+   			text-align: center; /* Center align the content inside this div */
+		}
+
+		#content span {
+    		margin: 0 10px; /* Add spacing between the links */
+    		cursor: pointer;
+    		color: #007bff;
+		}
+
+		#content span:hover {
+    		text-decoration: underline;
+		}
+
+        .product-details img {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .review-table {
+            width: 100%;
+            border: 1px solid #ddd;
+            border-collapse: collapse;
+        }
+
+        .review-table th, .review-table td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .review-table th {
+            background-color: #f1f1f1;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function(){
+            goodsDescript();
+            $("#descript").click(function(){
+                goodsDescript();
+            });
+            $("#inquire").click(function(){
+                inquire();
+            });
+            $("#buyItem").click(function(){
+                location.href = 
+                    "/item/buyItem?goodsNum=[[${dto.goodsDTO.goodsNum}]]&qty="+$("#cartQty").val();
+            });
+            $("#wish").click(function(){
+                if([[${#strings.isEmpty(session.auth)}]]){
+                    alert("로그 아웃되었습니다. 다시로그인 해주세요.");
+                    window.open("/login/item.login","login"
+                            ,"width=315, height=200,top = 100, left=100");
+                }else{
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "/item/wishItem",true);
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.onload = function(){
+                        if (xhr.status == 200) { // 정상적으로 처리 되었을 때 가져오는 값 200
+                            if($("#wish").attr("src") == "/static/images/hart1.jpg"){
+                                $("#wish").attr("src","/static/images/hart.jpg");
+                            }else{
+                                $("#wish").attr("src","/static/images/hart1.jpg");
+                            }
+                        }else{
+                            alert('로그인 아웃 되었습니다.\n다시 로그인 해 주세요.');
+                            location.href="/";
+                            return false;
+                        }
+                    }
+                    var formData = JSON.stringify({
+                        "goodsNum":"[[${dto.goodsDTO.goodsNum}]]"
+                    })
+                    xhr.send(formData);
+                }
+            });
+            $("#cartBtn").click(function(){
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/item/cartAdd", true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onload = function(){
+                    if (xhr.status === 200) {
+                        if(xhr.responseText == "200"){
+                            if(confirm("계속 쇼핑하려면 '취소'를 클릭하세요."))
+                                location.href="/item/cartList";
+                        }else if(xhr.responseText == "900"){
+                            alert("관리자는 사용할 수 없는 페이지입니다.");
+                        }else if(xhr.responseText == "000"){
+                            alert("로그 아웃되었습니다. 다시로그인 해주세요.");
+                            window.open("/login/item.login","login"
+                                    ,"width=315, height=200,top = 100, left=100"); 
+                        }
+                    }else{
+                            alert("로그 아웃되었습니다. 다시로그인 해주세요.");
+                            window.open("/login/item.login","login"
+                                    ,"width=315, height=200,top = 100, left=100"); 
+                    }
+                }
+                var formData = JSON.stringify({
+                    goodsNum: "[[${dto.goodsDTO.goodsNum}]]",
+                    qty : $("#cartQty").val()
+                })
+                xhr.send(formData);
+            });
+            $("#review").click(function(){
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/review/reviewList", true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                var formData = JSON.stringify(
+                        {"goodsNum":"[[${dto.goodsDTO.goodsNum}]]"}
+                );
+                xhr.onload = function(){
+                    if(xhr.status == 200){
+                        var result = JSON.parse(xhr.responseText);
+                        var item='<table class="review-table">';
+                        const reviewDetails = result.reviews.map(function(review){
+                            return `
+                                <tr><th>${review.memberId}</th><th>${review.purchaseNum}</th></tr>
+                                <tr><th colspan="2">${review.reviewContents}</th></tr>
+                            `;
+                        });			
+                        item += reviewDetails;
+                        item += '</table>';
+                        $("#content").html(item);
+                    }else{
+                        alert("서버오류!!!!");
+                    }
+                }
+                xhr.send(formData);
+            });
+        });
+        function goodsDescript(){
+            var formData = JSON.stringify(
+                    {"goodsNum":"[[${dto.goodsDTO.goodsNum}]]"}
+            );
+            $.ajax({
+                type : "post",
+                url : "/corner/goodsDescript",
+                data : formData,
+                contentType: "application/json",
+                dataType : "json",
+                success : function(data){
+                	console.log("Response data:", data);
+                    var item = "";
+                    item += "<div class='product-details'>";
+                    item += "<span>상품 설명 : " + data.goodsDTO.goodsContents + "</span>";
+                    item += "<br />";
+                    if(data.goodsDTO.goodsDetailStoreImage != null){
+                        var imageParts = data.goodsDTO.goodsDetailStoreImage.split(/[\/,`]/);
+                        imageParts.forEach(function(image,index, array){
+                        	item += "<img src='/static/upload/"+image+"' style='max-width: 500px; height: auto;' /><br />";
+                        });
+                    }
+                    item += "</div>";
+                    $("#content").html(item);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                }
+            });
+        }
+        function inquire(){
+            $.ajax({
+                type : "POST",
+                url: "/corner/inquireList",
+                dataType : "html",
+                data : {"goodsNum":"[[${dto.goodsDTO.goodsNum}]]"},
+                success : function(item){
+                    $("#content").html(item);
+                },
+                error:function(){
+                    alert("로그아웃되었습니다.");
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <table>
+        <caption>[[${dto.goodsDTO.goodsName }]] 상품정보입니다.</caption>
+        <tr>
+            <td rowspan="4">
+                <img th:src="|/static/upload/${dto.goodsDTO.goodsMainStoreImage }|" height="200" width="200" />
+            </td>
+            <td>상품명 : [[${dto.goodsDTO.goodsName }]]</td>
+        </tr>
+        <tr><td>가격 : [[${dto.goodsDTO.goodsPrice }]]</td></tr>
+        <!--  <tr><td>들여다본 수 : [[${dto.goodsDTO.visitCount }]]</td></tr>-->
+        <tr><td>수량 : <input type="number" min="1" step="1" value="1" id="cartQty"/> </td></tr>
+        <tr>
+            <td>
+                <th:block th:if="${dto.stock > 0 and dto.stock != null}">  
+                    <button type="button" id="cartBtn">장바구니</button>   | 
+                    <button type="button" id="buyItem">바로구매 </button> 
+                </th:block> 
+                <th:block th:if="${dto.stock <= 0 or dto.stock == null}">  
+                    품절입니다. 곧 입고될 예정입니다.
+                    </th:block>
+               
+<tr>
+    <td colspan="2" style="text-align: center;">
+        <span id="descript">제품 상세 설명</span>  | 
+        <span id="review">리뷰</span>  | 
+        <span id="inquire">상품문의</span>
+    </td>
+</tr>
+<tr><td colspan="2"><div id="content"></div></td></tr>
+</table>
+</body>
+</html>
+               
