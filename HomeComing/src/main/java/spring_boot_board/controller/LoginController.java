@@ -1,5 +1,8 @@
 package spring_boot_board.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,5 +42,27 @@ public class LoginController {
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/";
+	}
+	@GetMapping("item.login")
+	public String item() {
+		return "thymeleaf/login/login1";
+	}
+	@PostMapping("item.login")
+	public void item(LoginCommand loginCommand,BindingResult result
+			,HttpSession session, HttpServletResponse response) {
+		userLoginService.execute(loginCommand, session, result, response);
+		response.setContentType("text/html; charset=utf-8");
+		PrintWriter out = null;
+		try {
+			out = response.getWriter();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String str = "<script language='javascript'>";
+			   str+= " opener.location.reload();";
+			   str+= " window.self.close();";
+		       str+= " </script>"; 
+		out.print(str);
+		out.close();
 	}
 }

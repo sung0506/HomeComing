@@ -1,6 +1,7 @@
 package spring_boot_board.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -15,4 +16,5 @@ public interface CartMapper {
 	public List<GoodsCartDTO> cartSelectList(
 			@Param("memberNum") String memberNum, 
 			@Param("nums") String [] nums);
+	public int goodsNumsDelete(Map<String, Object> condition);
 }

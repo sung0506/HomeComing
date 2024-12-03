@@ -2,6 +2,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <title>상품 정보</title>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
     <style>
@@ -239,7 +241,7 @@
                 	console.log("Response data:", data);
                     var item = "";
                     item += "<div class='product-details'>";
-                    item += "<span>상품 설명 : " + data.goodsDTO.goodsContents + "</span>";
+                    item += "<span style='cursor: default; text-decoration: none; color: black;'>상품 설명 : " + data.goodsDTO.goodsContents + "</span>";
                     item += "<br />";
                     if(data.goodsDTO.goodsDetailStoreImage != null){
                         var imageParts = data.goodsDTO.goodsDetailStoreImage.split(/[\/,`]/);
@@ -272,6 +274,12 @@
     </script>
 </head>
 <body>
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a href="/" class="w3-bar-item w3-button">HomeComing</a>
+    <!-- Float links to the right. Hide them on small screens -->
+  </div>
+</div>
     <table>
         <caption>[[${dto.goodsDTO.goodsName }]] 상품정보입니다.</caption>
         <tr>
@@ -296,7 +304,7 @@
 <tr>
     <td colspan="2" style="text-align: center;">
         <span id="descript">제품 상세 설명</span>  | 
-        <span id="review">리뷰</span>  | 
+        <!--  <span id="review">리뷰</span>  | -->
         <span id="inquire">상품문의</span>
     </td>
 </tr>

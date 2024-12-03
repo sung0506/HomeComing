@@ -14,4 +14,5 @@ public interface GoodsMapper {
 	public int goodsCount(String searchWord);
 	public GoodsDTO selectOne(String goodsNum);
 	public List<GoodsDTO> goodsListByKind(String goodsKind);
+	public int goodsUpdate(GoodsDTO dto);
 }
