@@ -9,6 +9,11 @@
 <script type="text/javascript" src ="/static/js/daumAddressScript.js"></script>
 </head>
 <body>
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a href="/" class="w3-bar-item w3-button">HomeComing</a>
+  </div>
+</div>
     <div class="w3-container w3-padding-32" id="contact">
     <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">직원 회원가입</h3>
     <p>정보를 입력해주세요</p>
@@ -34,7 +39,7 @@
       <input class="w3-input w3-section w3-border" type="text" placeholder="주민번호" name="empJumin">
       <span style="color:red" th:if="${#fields.hasErrors('empJumin')}" th:errors="*{empJumin}"></span><br/>
       <button class="w3-button w3-black w3-section" type="submit">회원가입</button>
-      <button class="w3-button w3-black w3-section" type="submit" onclick="window.location.href='/';">홈</button>
+      <button class="w3-button w3-black w3-section" type="button" onclick="window.location.href='/'">홈</button>
     </form>
   </div>
 </body>

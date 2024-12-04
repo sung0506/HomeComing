@@ -42,4 +42,8 @@ public class PurchaseRepository {
 		statement = namespace + ".orderList";
 		return sqlSession.selectList(statement, map);
 	}
+	public int paymentStatusUpdate(String purchaseNum) {
+		statement = namespace + ".paymentStatusUpdate";
+		return sqlSession.update(statement,purchaseNum);
+	}
 }

@@ -30,9 +30,4 @@ public class ReviewRepository {
 		statement = namespace + ".goodsReviewList";
 		return sqlSession.selectList(statement, goodsNum);
 	}
-	
-	
-	
-	
-	
 }

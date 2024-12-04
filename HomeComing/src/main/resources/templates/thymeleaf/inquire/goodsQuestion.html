@@ -2,21 +2,121 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>goodsQuestion</title>
+<title>Goods Question</title>
 <script type="text/javascript">
 function goodsDetail(goodsNum){
-	window.open('/goods/goodsDetail?goodsNum='+goodsNum, '상품정보', 
-			"width=800,height=700,left=100,top=100");
+    window.open('/goods/goodsDetail?goodsNum=' + goodsNum, '상품정보', 
+        "width=800,height=700,left=100,top=100");
 }
 </script>
+<style>
+    /* 전체 페이지 스타일 */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* 테이블 스타일 */
+    table {
+        width: 80%;
+        margin: 50px auto;
+        border-collapse: collapse;
+        background-color: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 테이블 헤더 스타일 */
+    th {
+        background-color: #007BFF;
+        color: #fff;
+        padding: 12px;
+        text-align: center;
+        font-size: 16px;
+    }
+
+    /* 테이블 데이터 셀 스타일 */
+    td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* 번호 컬럼 */
+    td:nth-child(1) {
+        font-weight: bold;
+        color: #007BFF;
+    }
+
+    /* 문의 제목 스타일 */
+    a {
+        color: #007BFF;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    a:hover {
+        text-decoration: underline;
+        color: #0056b3;
+    }
+
+    /* 제품 번호 링크 스타일 */
+    a.goods-link {
+        color: #28a745;
+        text-decoration: none;
+    }
+
+    a.goods-link:hover {
+        text-decoration: underline;
+        color: #218838;
+    }
+
+    /* 테이블 마지막 행에 마진 추가 */
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* 버튼 스타일 */
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 15px;
+        color: #fff;
+        background-color: #007BFF;
+        border-radius: 5px;
+        font-weight: bold;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+</style>
 </head>
 <body>
-<table width="600" border=1 align="center" >
-	<tr><th>번호</th><th>문의제목</th><th>제품번호</th></tr>
-	<tr th:each="dto  , idx : ${list}" ><th>[[${idx.count }]]</th>
-		<th><a th:href="|inquireAnswer?inquireNum=${dto.inquireNum }|">
-					[[${dto.inquireKind}]] : [[${dto.inquireSubject }]]</a></th>
-		<th><a th:href="|javascript:goodsDetail('${dto.goodsNum }');|">[[${dto.goodsNum }]]</a></th></tr>
-</table>
+    <div style="text-align: center; margin-top: 30px;">
+        <h1>문의 리스트</h1>
+        <p>고객님의 소중한 문의를 확인하고 빠른 답변을 드리겠습니다.</p>
+    </div>
+
+    <table>
+        <tr>
+            <th>번호</th>
+            <th>문의제목</th>
+            <th>제품번호</th>
+        </tr>
+        
+        <tr th:each="dto, idx : ${list}">
+            <td>[[${idx.count}]]</td>
+            <td><a th:href="|inquireAnswer?inquireNum=${dto.inquireNum}|">[[${dto.inquireKind}]] : [[${dto.inquireSubject}]]</a></td>
+            <td><a class="goods-link" th:href="|javascript:goodsDetail('${dto.goodsNum}');|">[[${dto.goodsNum}]]</a></td>
+        </tr>
+    </table>
+
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="/" class="btn">홈으로</a>
+    </div>
 </body>
 </html>

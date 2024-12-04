@@ -1,56 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <style>
-    /* 네비게이션 바 아래로 여백 추가 */
-    form {
-        margin-top: 100px;  /* 네비게이션 바 높이에 맞춰 여백 설정 */
+    body {
+        background-image: url('https://www.w3schools.com/w3images/dog.jpg'); /* 반려동물 관련 배경 이미지 */
+        background-size: cover;
+        background-position: center;
+        font-family: Arial, sans-serif;
+        color: white;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center; /* 수평 중앙 정렬 */
+        align-items: center; /* 수직 중앙 정렬 */
+        height: 100vh; /* 화면 전체 높이 */
+    }
+
+    .login-container {
+        background-color: rgba(0, 0, 0, 0.7); /* 투명한 배경 */
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        max-width: 400px;
+        width: 100%; /* 화면 크기에 맞게 너비 조정 */
+        text-align: center;
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .login-container input[type="image"] {
+        width: 80px;
+        margin-top: 20px;
+        border-radius: 5px;
+    }
+
+    .login-container a {
+        color: #66ccff;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .login-container a:hover {
+        text-decoration: underline;
+    }
+
+    /* 버튼 스타일 */
+    .login-btn {
+        background-color: #007bff;
+        color: white;
+        padding: 12px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .login-btn:hover {
+        background-color: #0056b3;
     }
 </style>
 </head>
 <body>
-
 <!-- Navigation Bar -->
 <div class="w3-top">
   <div class="w3-bar w3-white w3-wide w3-padding w3-card">
     <a href="/" class="w3-bar-item w3-button">HomeComing</a>
   </div>
 </div>
-
 <!-- 로그인 폼 -->
-<!--  
-<form action="signin" method="post">
-    <table border="1" align="center">
-        <tr>
-            <td><input type="text" name="userId" placeholder="아이디" /></td>
-            <td rowspan="2">
-                <input type="image" src="/static/images/HomeComing.png" width="100" />
-            </td>
-        </tr>
-        <tr>
-            <td><input type="password" name="userPw" placeholder="비밀번호" /></td>
-        </tr>
-    </table>
-</form>
--->
-<div th:if="${session.auth == null}">
-<form action="signin" method="post" th:object="${loginCommand}" >
-<table border="1" align="center">
-	<tr><td>아 이 디 : <input type="text" name="userId" th:value="${loginCommand.userId}" /><br />
-			<span th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"></span></td>
-		<td rowspan="2">
-			<input type="image" src="/static/images/HomeComing.png" width="60" /></span>
-		</td></tr>
-	<tr><td>비밀번호: <input type="password" name="userPw" /><br />
-			<span th:if="${#fields.hasErrors('userPw')}" th:errors="*{userPw}"> </td></tr>
-	<tr><td colspan="2"><a href="/help/findId">아이디</a> / 
-						<a href="/help/findPassword">비밀번호 찾기</a> | 
-		<a href="/register/userAgree">회원가입</a></td></tr>
-</table>
-</form>
+<div th:if="${session.auth == null}" class="login-container">
+    <form action="signin" method="post" th:object="${loginCommand}">
+        <h2>로그인</h2>
+        <table align="center">
+            <tr>
+                <td>아이디:</td>
+                <td><input type="text" name="userId" th:value="${loginCommand.userId}" placeholder="아이디" /><br />
+                    <span th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"></span></td>
+            </tr>
+            <tr>
+                <td>비밀번호:</td>
+                <td><input type="password" name="userPw" placeholder="비밀번호" /><br />
+                    <span th:if="${#fields.hasErrors('userPw')}" th:errors="*{userPw}"></span></td>
+            </tr>
+        </table>
+        <input type="image" src="/static/images/HomeComing.png" alt="홈으로" />
+        <input type="submit" class="login-btn" value="로그인" />
+        <div>
+            <a href="/help/findId">아이디 찾기</a> / 
+            <a href="/help/findPassword">비밀번호 찾기</a> | 
+            <a href="/member/memberWrite">회원가입</a>
+        </div>
+    </form>
+</div>
 
 </body>
 </html>

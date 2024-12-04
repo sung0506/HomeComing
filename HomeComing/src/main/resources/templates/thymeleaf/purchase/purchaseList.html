@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Purchase List</title>
+<style>
+    /* 전체 페이지 배경색 */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* 중앙에 테이블 배치 */
+    table {
+        width: 80%;
+        margin: 50px auto;
+        border-collapse: collapse;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 테이블 헤더 스타일 */
+    th {
+        background-color: #007BFF;
+        color: #fff;
+        padding: 15px;
+        text-align: left;
+    }
+
+    /* 테이블 데이터 셀 스타일 */
+    td {
+        padding: 12px 15px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* 주문 번호 및 결제번호 스타일 */
+    .order-num {
+        font-weight: bold;
+        color: #333;
+    }
+
+    /* 상품명에 이미지 및 텍스트 스타일 */
+    .product-info img {
+        width: 50px;
+        height: auto;
+        margin-right: 10px;
+    }
+
+    .product-info {
+        display: flex;
+        align-items: center;
+    }
+
+    /* 링크 스타일 */
+    a {
+        color: #007BFF;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    a:hover {
+        text-decoration: underline;
+        color: #0056b3;
+    }
+
+    /* 상태별 스타일 */
+    .status-waiting {
+        color: orange;
+        font-weight: bold;
+    }
+
+    .status-completed {
+        color: green;
+        font-weight: bold;
+    }
+
+    /* 버튼 스타일 */
+    .btn {
+        display: inline-block;
+        padding: 8px 15px;
+        margin-top: 10px;
+        color: #fff;
+        background-color: #007BFF;
+        border-radius: 4px;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+
+    /* 결제 상태가 현금결제인 경우 */
+    .cash-payment {
+        color: #555;
+        font-style: italic;
+    }
+
+    table {
+        margin-top: 100px; /* 네비게이션 바와 이미지 높이를 고려하여 테이블 위쪽 여백 추가 */
+    }
+</style>
+<script type="text/javascript">
+function detail(purchaseNum){
+    window.open("/delivery/deliveryRegist?purchaseNum=" + purchaseNum, "",
+        "width=800,height=800,top=100,left=100");
+}
+</script>
+</head>
+<body>
+<table>
+    <tr>
+        <th>주문일(결제번호)</th>
+        <th>상품명/주문번호</th>
+        <th>주문상태</th>
+    </tr>
+    <tr th:each="orderListDTO : ${list}">
+        <td>
+            [[${#dates.format(orderListDTO.purchaseDTO.purchaseDate,'yyyy-MM-dd')}]]
+            (
+            <span th:if="${orderListDTO.paymentDTO.appldate == null}" class="status-waiting">결제대기중</span>
+            <span th:if="${orderListDTO.paymentDTO.appldate != null}">
+                <span th:if="${orderListDTO.paymentDTO.confirmnumber == null}" class="cash-payment">현금결제</span>
+                <span th:if="${orderListDTO.paymentDTO.confirmnumber != null}">
+                    [[${orderListDTO.paymentDTO.confirmnumber}]]
+                </span>
+            </span>
+            )
+        </td>
+        <td>
+            <th:block th:each="purchaseListGoodsDTO : ${orderListDTO.purchaseListGoodsDTOs}">
+                <div class="product-info">
+                    <img th:src="|/static/upload/${purchaseListGoodsDTO.goodsDTO.goodsMainStoreImage}|" />
+                    [[${purchaseListGoodsDTO.goodsDTO.goodsName}]]/[[${orderListDTO.purchaseDTO.purchaseNum}]]
+                </div>
+            </th:block>
+        </td>
+        <td>
+            <a th:href="|javascript:detail('${orderListDTO.purchaseDTO.purchaseNum}');|">주문상세보기</a> |
+            <span th:if="${orderListDTO.paymentDTO.appldate == null}" class="status-waiting">
+                결제대기중
+            </span>
+            <th:block th:if="${orderListDTO.paymentDTO.appldate != null}">
+                <span th:if="${orderListDTO.deliveryDTO.deliveryNum == null}" class="status-completed">
+                    결제완료
+                </span>
+                <th:block th:if="${orderListDTO.deliveryDTO.deliveryNum != null}">
+                    <span th:if="${orderListDTO.deliveryDTO.deliveryStatus != '배송완료'}">
+                        <a th:href="|/delivery/deliveryStatus?purchaseNum=${orderListDTO.purchaseDTO.purchaseNum}|">배송중</a>
+                    </span>
+                    <span th:if="${orderListDTO.deliveryDTO.deliveryStatus == '배송완료'}">
+                        배송완료
+                    </span>
+                </th:block>
+            </th:block>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

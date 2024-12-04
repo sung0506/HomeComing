@@ -13,6 +13,20 @@
             padding: 0;
         }
 
+        /* 메뉴바 스타일 수정 */
+        .w3-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000; /* 메뉴바가 항상 위에 오도록 설정 */
+        }
+
+        /* 메뉴바 아래에 공간을 추가하여 겹침 방지 */
+        body {
+            padding-top: 60px; /* 메뉴바 높이에 맞게 여백을 추가 */
+        }
+
         .container {
             max-width: 800px;
             margin: 30px auto;
@@ -82,26 +96,24 @@
             text-decoration: underline;
         }
     </style>
-<!-- Navbar (sit on top) -->
-<div class="w3-top">
-  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
-    <a href="/" class="w3-bar-item w3-button">HomeComing</a>
-    <!-- Float links to the right. Hide them on small screens -->
-    <div class="w3-right w3-hide-small">
- 		<div th:if="${session.auth != null}">
-      		<th:block th:if="${session.auth.grade == 'emp'}">
-      		<a href="goodsIpgo" class="w3-bar-item w3-button">상품 입고</a>
-      		<a href="login/logout" class="w3-bar-item w3-button">로그아웃</a>
-      		</th:block>
-
-      	
-      		
-      	</div>
-      </div>
-    </div>
-  </div>
 </head>
 <body>
+    <!-- Navbar -->
+    <div class="w3-top">
+        <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+            <a href="/" class="w3-bar-item w3-button">HomeComing</a>
+            <div class="w3-right w3-hide-small">
+                <div th:if="${session.auth != null}">
+                    <th:block th:if="${session.auth.grade == 'emp'}">
+                        <a href="goodsIpgo" class="w3-bar-item w3-button">상품 입고</a>
+                        <a href="login/logout" class="w3-bar-item w3-button">로그아웃</a>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 상품 입고 리스트 -->
     <div class="container">
         <h2>상품 입고 리스트</h2>
 

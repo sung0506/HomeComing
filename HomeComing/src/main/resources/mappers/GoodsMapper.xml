@@ -96,4 +96,15 @@ update goods
 </trim>
 where goods_num = #{goodsNum}
 </update>
+<delete id="goodsDelete" parameterType="string">
+delete from goods
+where goods_num = #{goodsNum}
+</delete>
+<delete id="productsDelete" parameterType="string">
+delete from goods <!-- foreach문을 사용해서 in연산자를 사용합니다. -->
+where goods_num in <foreach collection="products" item="goodsNum" open="(" close=")" index="index"
+					separator=",">
+						#{goodsNum}
+					</foreach>
+</delete>
 </mapper>

@@ -116,4 +116,9 @@ on pl.purchase_num = r.purchase_num and pl.goods_num = r.goods_num
 	</if>
 </trim>
 </select>
+<update id="paymentStatusUpdate" parameterType="string"> 
+	update purchase
+	set PURCHASE_STATUS = '구매확정'
+	where purchase_num = #{purchaseNum}
+</update>
 </mapper>

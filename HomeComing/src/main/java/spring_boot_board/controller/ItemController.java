@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import spring_boot_board.command.CartCommand;
 import spring_boot_board.service.item.CartInsertService;
 import spring_boot_board.service.item.CartListService;
+import spring_boot_board.service.item.GoodsCartDelsService;
 
 @Controller
 @RequestMapping("item")
@@ -21,6 +22,8 @@ public class ItemController {
 	CartInsertService cartInsertService;
 	@Autowired
 	CartListService cartListService;
+	@Autowired
+	GoodsCartDelsService goodsCartDelsService;
 	@RequestMapping("cartList")
 	public String cartList(Model model, HttpSession session) {
 		cartListService.execute(model, session);
@@ -54,5 +57,10 @@ public class ItemController {
 		else if(result == "900")	
 			return "redirect:/corner/detailView/"+cartCommand.getGoodsNum();
 		*/
+	}
+	@GetMapping("cartDel")
+	public String cartDel(String goodsNums[] , HttpSession session) {
+		goodsCartDelsService.execute(goodsNums, session);
+		return "redirect:cartList";
 	}
 }

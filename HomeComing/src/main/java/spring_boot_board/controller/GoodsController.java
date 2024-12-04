@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
 import spring_boot_board.command.GoodsCommand;
 import spring_boot_board.service.AutoNumService;
+import spring_boot_board.service.goods.GoodsDeleteService;
 import spring_boot_board.service.goods.GoodsDetailService;
 import spring_boot_board.service.goods.GoodsListService;
 import spring_boot_board.service.goods.GoodsRegistService;
 import spring_boot_board.service.goods.GoodsUpdateService;
 import spring_boot_board.service.goods.KindGoodsListService;
+import spring_boot_board.service.goods.ProductsDeleteService;
 import spring_boot_board.service.item.GoodsDetailViewService;
 
 @RequestMapping("goods")
@@ -39,6 +41,10 @@ public class GoodsController {
 	GoodsDetailViewService goodsDetailViewService;
 	@Autowired
 	GoodsUpdateService goodsUpdateService;
+	@Autowired
+	GoodsDeleteService goodsDeleteService;
+	@Autowired
+	ProductsDeleteService productsDeleteService;
 	@GetMapping("goodsList")
 	@RequestMapping(value="goodsList" , method=RequestMethod.GET)
 	public String  goodsList(
@@ -115,5 +121,16 @@ public class GoodsController {
 			return "thymeleaf/goods/goodsModify";
 		}
 		return "redirect:goodsDetail?goodsNum="+goodsCommand.getGoodsNum();
+	}
+	@RequestMapping("goodsDel/{goodsNum}")
+	public String goodsDel(@PathVariable("goodsNum") String goodsNum) {
+		goodsDeleteService.execute(goodsNum);
+		return "redirect:../goodsList"; //PathVariable인 경우에는 주소 앞에 .. 을 꼭해줘야 합니다.
+	}
+	@PostMapping("productsDelete")
+	public String productsDelete(//체크박스에 의해 전달 된 값을 배열로 받습니다.
+			@RequestParam(value = "nums") String memDels[]) {
+		productsDeleteService.execute(memDels);
+		return "redirect:goodsList";
 	}
 }

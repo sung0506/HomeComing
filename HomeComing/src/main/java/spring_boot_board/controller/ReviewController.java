@@ -51,7 +51,6 @@ public class ReviewController {
 
 		return "redirect:/purchase/orderList";
 	}
-	
 	@PostMapping("reviewList")
 	public ResponseEntity<Map<String, Object>> reviewList(
 			@RequestBody Map<String, String> map
@@ -63,9 +62,4 @@ public class ReviewController {
 		response.put("reviews", list);
 		return ResponseEntity.ok(response);
 	}
-	
-	
-	
-	
-	
 }
