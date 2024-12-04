@@ -8,6 +8,7 @@
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript" src ="/static/js/daumAddressScript.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+<script type="text/javascript" src="/static/js/check.js"></script>
 </head>
 <body>
 <div class="w3-top">
@@ -22,13 +23,15 @@
       <input class="w3-input w3-border" type="text" placeholder="회원 번호" name="memberNum" th:value="${memberCommand.memberNum}" readonly="readonly">
       <input class="w3-input w3-section w3-border" type="text" placeholder="이름" name="memberName" th:value="${memberCommand.memberName}">
       <span style="color:red" th:if="${#fields.hasErrors('memberName')}" th:errors="*{memberName}"></span>
-      <input class="w3-input w3-section w3-border" type="text" placeholder="아이디" name="memberId" th:value="${memberCommand.memberId}">
+      <input class="w3-input w3-section w3-border" type="text" placeholder="아이디" name="memberId" id="userId" th:value="${memberCommand.memberId}">
+      <span id="idCheck"></span>
       <span  style="color:red" th:if="${#fields.hasErrors('memberId')}" th:errors="*{memberId}"></span>
       <input class="w3-input w3-section w3-border" type="password" placeholder="비밀번호" name="memberPw">
       <span style="color:red" th:if="${#fields.hasErrors('memberPw')}"  th:errors="*{memberPw}"></span>
       <input class="w3-input w3-section w3-border" type="password" placeholder="비밀번호 확인" name="memberPwCon">
       <span style="color:red" th:if="${#fields.hasErrors('memberPwCon')}" th:errors="*{memberPwCon}"></span>
-      <input class="w3-input w3-section w3-border" type="text" placeholder="이메일" name="memberEmail" th:value="${memberCommand.memberEmail}">
+      <input class="w3-input w3-section w3-border" type="text" placeholder="이메일" name="memberEmail" id ="userEmail" th:value="${memberCommand.memberEmail}">
+      <span id="emailCheck"></span>
       <span style="color:red" th:if="${#fields.hasErrors('memberEmail')}" th:errors="*{memberEmail}"></span>
       <input class="w3-input w3-section w3-border" type="text" id="sample4_roadAddress" placeholder="주소" name="memberAddr" th:value="${memberCommand.memberAddr}" readonly="readonly" >
       <span style="color:red" th:if="${#fields.hasErrors('memberAddr')}" th:errors="*{memberAddr}"></span>

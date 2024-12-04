@@ -70,4 +70,9 @@ where rn BETWEEN #{startRow} and #{endRow}
 <select id="memberNumSelect" parameterType="string" resultType="string">
 	select member_num from members where member_id = #{memberId}
 </select>
+<update id="memberEmailCheckUpdate" parameterType="string">
+	update members
+	set MEMBER_EMAIL_CONF = 'Y'
+	where member_email = #{memberEmail} and MEMBER_EMAIL_CONF is null
+</update>
 </mapper>

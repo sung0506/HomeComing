@@ -1,0 +1,21 @@
+<!DOCTYPE mapper PUBLIC 	
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="spring_boot_board.mapper.FindMapper">
+<select id="findId" parameterType="string" resultType="string">
+select member_id
+from members
+where member_email = #{_userEmail} 
+and member_phone = #{_userPhone} 
+union
+select emp_id
+from employees
+where emp_phone = #{_userPhone} and emp_email =#{_userEmail}
+</select>
+<update id="pwUpdate" parameterType="userChangePassword">
+update ${tableName}
+set ${pwColumName}  = #{userPw}
+where ${userIdColumName}  = #{userId} 
+and ${phoneColumn} = #{userPhone}
+</update>
+</mapper>

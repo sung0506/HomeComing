@@ -2,6 +2,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <title>장바구니</title>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
 <script type="text/javascript" src="/static/js/checkbox.js"></script>
@@ -121,6 +123,7 @@ table {
     border-collapse: collapse;
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
 }
 
 th, td {
@@ -182,9 +185,18 @@ input[type="button"]:hover {
 #totQty, #totalPrice {
     color: #27ae60;
 }
+table {
+      margin-top: 100px;  /* 네비게이션 바와 이미지 높이를 고려하여 테이블 위쪽 여백 추가 */
+    }
 </style>
 </head>
 <body>
+<!-- Navigation Bar -->
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a href="/" class="w3-bar-item w3-button">HomeComing</a>
+  </div>
+</div>
 <form action="/purchase/goodsBuy" method="post">
 <table>
     <thead>

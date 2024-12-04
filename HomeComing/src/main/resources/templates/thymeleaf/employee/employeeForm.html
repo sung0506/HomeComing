@@ -7,6 +7,8 @@
 <title>Login</title>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript" src ="/static/js/daumAddressScript.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+<script type="text/javascript" src="/static/js/check.js"></script>
 </head>
 <body>
 <div class="w3-top">
@@ -21,13 +23,15 @@
       <input class="w3-input w3-border" type="text" placeholder="직원 번호" name="empNum" th:value="${employeeCommand.empNum}" readonly="readonly">
       <input class="w3-input w3-section w3-border" type="text" placeholder="이름" name="empName">
       <span style="color:red" th:if="${#fields.hasErrors('empName')}" th:errors="*{empName}"></span>
-      <input class="w3-input w3-section w3-border" type="text" placeholder="아이디" name="empId">
+      <input class="w3-input w3-section w3-border" type="text" placeholder="아이디" name="empId" id ="userId">
+      <span id="idCheck"></span>
       <span  style="color:red" th:if="${#fields.hasErrors('empId')}" th:errors="*{empId}"></span>
       <input class="w3-input w3-section w3-border" type="password" placeholder="비밀번호" name="empPw">
       <span style="color:red" th:if="${#fields.hasErrors('empPw')}"  th:errors="*{empPw}"></span>
       <input class="w3-input w3-section w3-border" type="password" placeholder="비밀번호 확인" name="empPwCon">
       <span style="color:red" th:if="${#fields.hasErrors('empPwCon')}" th:errors="*{empPwCon}"></span>
-      <input class="w3-input w3-section w3-border" type="text" placeholder="이메일" name="empEmail">
+      <input class="w3-input w3-section w3-border" type="text" placeholder="이메일" name="empEmail" id ="userEmail">
+      <span id="emailCheck"></span>
       <span style="color:red" th:if="${#fields.hasErrors('empEmail')}" th:errors="*{empEmail}"></span>
       <input class="w3-input w3-section w3-border" type="text" id="sample4_roadAddress" placeholder="주소" name="empAddr">
       <span style="color:red" th:if="${#fields.hasErrors('empAddr')}" th:errors="*{empAddr}"></span>

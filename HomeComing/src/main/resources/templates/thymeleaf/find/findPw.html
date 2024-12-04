@@ -30,7 +30,7 @@
     }
 
     .login-container input[type="text"],
-    .login-container input[type="password"] {
+    .login-container input[type="email"] {
         width: 100%;
         padding: 12px;
         margin: 10px 0;
@@ -39,24 +39,7 @@
         font-size: 16px;
     }
 
-    .login-container input[type="image"] {
-        width: 80px;
-        margin-top: 20px;
-        border-radius: 5px;
-    }
-
-    .login-container a {
-        color: #66ccff;
-        text-decoration: none;
-        font-size: 14px;
-    }
-
-    .login-container a:hover {
-        text-decoration: underline;
-    }
-
-    /* 버튼 스타일 */
-    .login-btn {
+    .login-container input[type="submit"] {
         background-color: #007bff;
         color: white;
         padding: 12px 20px;
@@ -68,8 +51,18 @@
         margin-top: 20px;
     }
 
-    .login-btn:hover {
+    .login-container input[type="submit"]:hover {
         background-color: #0056b3;
+    }
+
+    .login-container a {
+        color: #66ccff;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .login-container a:hover {
+        text-decoration: underline;
     }
 </style>
 </head>
@@ -80,29 +73,24 @@
     <a href="/" class="w3-bar-item w3-button">HomeComing</a>
   </div>
 </div>
-<!-- 로그인 폼 -->
-<div th:if="${session.auth == null}" class="login-container">
-    <form action="signin" method="post" th:object="${loginCommand}">
-        <h2>로그인</h2>
-        <table align="center">
+
+<!-- 비밀번호 찾기 폼 -->
+<div class="login-container">
+    <form action="findPassword" name="frm" id="frm" method="post">
+        <h2>비밀번호 찾기</h2>
+        <table align="center" style="width:100%">
             <tr>
                 <td>아이디:</td>
-                <td><input type="text" name="userId" th:value="${loginCommand.userId}" placeholder="아이디" /><br />
-                    <span th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"></span></td>
+                <td><input type="text" name="userId" placeholder="아이디 입력" required /></td>
             </tr>
             <tr>
-                <td>비밀번호:</td>
-                <td><input type="password" name="userPw" placeholder="비밀번호" /><br />
-                    <span th:if="${#fields.hasErrors('userPw')}" th:errors="*{userPw}"></span></td>
+                <td>전화번호:</td>
+                <td><input type="text" name="userPhone" placeholder="전화번호 입력" required /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="비밀번호 찾기" class="login-btn" /></td>
             </tr>
         </table>
-        <input type="image" src="/static/images/HomeComing.png" alt="홈으로" />
-        <input type="submit" class="login-btn" value="로그인" />
-        <div>
-            <a href="/find/findId">아이디 찾기</a> / 
-            <a href="/find/findPassword">비밀번호 찾기</a> | 
-            <a href="/member/memberWrite">회원가입</a>
-        </div>
     </form>
 </div>
 

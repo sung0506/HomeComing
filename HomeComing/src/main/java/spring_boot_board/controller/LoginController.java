@@ -11,10 +11,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import spring_boot_board.command.LoginCommand;
+import spring_boot_board.service.IdcheckService;
 import spring_boot_board.service.login.UserLoginService;
 
 @RequestMapping("login")
@@ -22,10 +24,18 @@ import spring_boot_board.service.login.UserLoginService;
 public class LoginController {
 	@Autowired
 	UserLoginService userLoginService;
+	@Autowired
+	IdcheckService idcheckService;
 	@GetMapping("login")
 	public String login(Model model) {
 		model.addAttribute("loginCommand", new LoginCommand());
 		return "thymeleaf/login/login";
+	}
+	@PostMapping("userIdCheck")
+	public @ResponseBody Integer userIdCheck(String userId) {
+		// html, jsp파일경로(x)
+		return idcheckService.execute(userId);
+		
 	}
 	@PostMapping("signin")
 	public String login(@Validated LoginCommand loginCommand

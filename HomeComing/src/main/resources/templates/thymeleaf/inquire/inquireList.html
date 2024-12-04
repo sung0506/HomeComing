@@ -15,7 +15,7 @@ $(function(){
 			}
 		}else{
 			popupWindow  = window.open("/inquire/inquireWrite?goodsNum=[[${goodsNum}]]","상품문의"
-					,"width=700, height=650, top = 100, left=100");
+					,"width=900, height=600, top = 100, left=100");
 			let popupCheckInterval = setInterval(function(){
 				if (popupWindow.closed) {
 					clearInterval(popupCheckInterval); 
@@ -29,7 +29,7 @@ $(function(){
 
 function inquireUpdate(inquireNum){
 	window.open("/inquire/inquireUpdate?inquireNum="+inquireNum,
-			"","width=700, height=650, top = 100, left=100");
+			"","width=900, height=600, top = 100, left=100");
 }
 
 function inquireDelete(inquireNum){
